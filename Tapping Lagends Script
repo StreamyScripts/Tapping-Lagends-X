@@ -1,0 +1,734 @@
+_G.settings = {
+    autoTap = false,
+    autoRebirth = false,
+    autoEgg1 = false,
+    autoEgg3 = false,
+    selectEgg = '',
+    autoEquip = false,
+    rebirthAmount = 0,
+    afWalk = false,
+    afTeleport = false,
+    autoTime = false,
+    autoAchiev = false,
+    antiafk = false,
+    autoVial = false,
+    drop = '',
+}
+
+local Eggs = {}
+for i, v in pairs(workspace.Eggs:GetChildren()) do
+    table.insert(Eggs, v.Name:sub(1, -5))
+end
+
+local rebirths = {
+    [1] = '1',
+    [2] = '5',
+    [3] = '20',
+    [4] = '80',
+    [5] = '400',
+    [6] = '2K',
+    [7] = '10K',
+    [8] = '40K',
+    [9] = '100K',
+    [10] = '400K',
+    [11] = '2M',
+    [12] = '10M',
+    [13] = '40M',
+    [14] = '100M',
+    [15] = '500M',
+    [16] = '2B',
+    [17] = '10B',
+    [18] = '40B',
+    [19] = '200B',
+    [20] = '1T',
+    [21] = '2T',
+    [22] = '10T',
+    [23] = '40T',
+    [24] = '100T',
+    [25] = '500T',
+    [26] = '2Qd',
+    [27] = '10Qd',
+    [28] = '100Qd',
+    [29] = '500Qd',
+    [30] = '2Qn',
+    [31] = '10Qn',
+    [32] = '40Qn',
+    [33] = '200Qn',
+    [34] = '1Sx',
+}
+
+local PTR = {
+    [1] = 1,
+    [2] = 2,
+    [3] = 3,
+    [4] = 4,
+    [5] = 5,
+    [6] = 6,
+    
+}
+
+local Codes = {
+    [1] = '',
+    [2] = '50ksuscode',
+    [3] = 'hell',
+}
+
+local filename = "TLX_Settings.txt"
+
+function loadSettings()
+    local HttpService = game:GetService("HttpService")
+    if (readfile and isfile and isfile(filename)) then
+        _G.settings = HttpService:JSONDecode(readfile(filename))
+    end
+end
+
+function saveSettings()
+    local json
+    local HttpService = game:GetService("HttpService")
+    if (writefile) then
+        json = HttpService:JSONEncode(_G.settings)
+        writefile(filename, json)
+    end
+end
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+if string.find(game:HttpGet('https://raw.githubusercontent.com/Lagendking/Tapping-Legend-X-Script/main/Script'), game.Players.LocalPlayer.Name) then
+    local Window = Library.CreateLib("TLX Script (Premium)", "Serpent")
+    local Tab = Window:NewTab("Auto")
+    local Tab2 = Window:NewTab("Misc")
+    local Tab3 = Window:NewTab("Keybinds")
+    local Tab4 = Window:NewTab("Premium")
+    local Keybinds = Tab3:NewSection("Keybinds")
+    
+    Keybinds:NewKeybind("ToggleUI", "Hides & UnHides UI", Enum.KeyCode.F, function()
+        Library:ToggleUI()
+    end)
+    Keybinds:NewKeybind("Index", "Opens the pet index", Enum.KeyCode.R, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = true
+        game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = false
+    end)
+    Keybinds:NewKeybind("Upgrades", "Opens the upgrade menu", Enum.KeyCode.T, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = true
+        game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = false
+    end)
+    Keybinds:NewKeybind("Skins", "Opens the skin shop", Enum.KeyCode.Y, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = true
+    end)
+    Keybinds:NewKeybind("Gold Machine", "Opens the gold machine", Enum.KeyCode.U, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = false
+        wait(0.1)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
+        local goldclone = workspace.UIProx.GoldenMachine:Clone()
+        goldclone.Parent = workspace.UIProx
+        goldclone.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Vector3.new(0, 2, 0)
+        spawn(function()
+            while wait() do
+                if game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled == false and game.Players.LocalPlayer.PlayerGui.Menus.MachineResult.Enabled == false then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25
+                    goldclone:Destroy()
+                    return
+                end
+            end
+        end)
+        spawn(function()
+            while wait() do
+                if game.Players.LocalPlayer.PlayerGui.Menus.MachineResult.Enabled == true or game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled == true then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
+                end
+            end
+        end)
+        if rainbowclone then
+            rainbowclone:Destroy()
+        end
+    end)
+    Keybinds:NewKeybind("Rainbow Machine", "Opens the rainbow machine", Enum.KeyCode.G, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = false
+        wait(0.1)
+        local rainbowclone = workspace.UIProx.RainbowMachine:Clone()
+        rainbowclone.Parent = workspace.UIProx
+        rainbowclone.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Vector3.new(0, 2, 0)
+        spawn(function()
+            while wait() do
+                if game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled == false and game.Players.LocalPlayer.PlayerGui.Menus.MachineResult.Enabled == false then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25
+                    rainbowclone:Destroy()
+                    return
+                end
+            end
+        end)
+        spawn(function()
+            while wait() do
+                if game.Players.LocalPlayer.PlayerGui.Menus.MachineResult.Enabled == true or game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled == true then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
+                end
+            end
+        end)
+        if goldclone then
+            goldclone:Destroy()
+        end
+    end)
+    
+    local AutoTap = Tab:NewSection("Auto Tap")
+    game.Players.LocalPlayer.Character.LeftFoot.Touched:Connect(function(hit)
+        if hit.Parent.Parent.Parent.Name == "Drops" then
+            _G.settings.drop = hit.Parent.Name
+        end
+    end)
+    
+    local AT = AutoTap:NewToggle("", "Auto Taps", function(state)
+        _G.settings.autoTap = state
+        saveSettings()
+        spawn(function()
+            while _G.settings.autoTap do
+                wait()
+                local args = {[1] = _G.settings.drop}
+                game:GetService("ReplicatedStorage").Remotes.Tap:FireServer(unpack(args))
+            end
+        end)
+    end)
+    
+    local AutoRebirth = Tab:NewSection("Auto Rebirth")
+    
+    AutoRebirth:NewDropdown("Rebirth", "", {unpack(rebirths)}, function(mob)
+        if mob == '1' then
+            _G.settings.rebirthAmount = 1 
+        elseif mob == '5' then
+            _G.settings.rebirthAmount = 2 
+        elseif mob == '20' then
+            _G.settings.rebirthAmount = 3
+        elseif mob == '80' then
+            _G.settings.rebirthAmount = 4 
+        elseif mob == '400' then
+            _G.settings.rebirthAmount = 5 
+        elseif mob == '2K' then
+            _G.settings.rebirthAmount = 6
+        elseif mob == '10K' then
+            _G.settings.rebirthAmount = 7
+        elseif mob == '40K' then
+            _G.settings.rebirthAmount = 8
+        elseif mob == '100K' then
+            _G.settings.rebirthAmount = 9
+        elseif mob == '400K' then
+            _G.settings.rebirthAmount = 10
+        elseif mob == '2M' then
+            _G.settings.rebirthAmount = 11
+        elseif mob == '10M' then
+            _G.settings.rebirthAmount = 12
+        elseif mob == '40M' then
+            _G.settings.rebirthAmount = 13
+        elseif mob == '100M' then
+            _G.settings.rebirthAmount = 14
+        elseif mob == '500M' then
+            _G.settings.rebirthAmount = 15
+        elseif mob == '2B' then
+            _G.settings.rebirthAmount = 16
+        elseif mob == '10B' then
+            _G.settings.rebirthAmount = 17
+        elseif mob == '40B' then
+            _G.settings.rebirthAmount = 18
+        elseif mob == '200B' then
+            _G.settings.rebirthAmount = 19
+        elseif mob == '1T' then
+            _G.settings.rebirthAmount = 20
+        elseif mob == '2T' then
+            _G.settings.rebirthAmount = 21
+        elseif mob == '10T' then
+            _G.settings.rebirthAmount = 22
+        elseif mob == '40T' then
+            _G.settings.rebirthAmount = 23
+        elseif mob == '100T' then
+            _G.settings.rebirthAmount = 24
+        elseif mob == '500T' then
+            _G.settings.rebirthAmount = 25
+        elseif mob == '2Qd' then
+            _G.settings.rebirthAmount = 26
+        elseif mob == '10Qd' then
+            _G.settings.rebirthAmount = 27
+        elseif mob == '100Qd' then
+            _G.settings.rebirthAmount = 28
+        elseif mob == '500Qd' then
+            _G.settings.rebirthAmount = 29
+        elseif mob == '2Qn' then
+            _G.settings.rebirthAmount = 30
+        elseif mob == '10Qn' then
+            _G.settings.rebirthAmount = 31
+        elseif mob == '40Qn' then
+            _G.settings.rebirthAmount = 32
+        elseif mob == '200Qn' then
+            _G.settings.rebirthAmount = 33
+        elseif mob == '1Sx' then
+            _G.settings.rebirthAmount = 34
+        elseif mob == '5Sx' then
+            _G.settings.rebirthAmount = 35
+        end
+    end)
+    
+    local AR = AutoRebirth:NewToggle("", "Auto Rebirths", function(state)
+        _G.settings.autoRebirth = state
+        saveSettings()
+        spawn(function()
+            while _G.settings.autoRebirth do
+                wait()
+                local args = {[1] = _G.settings.rebirthAmount}
+                game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer(unpack(args))
+            end
+        end)
+    end)
+    
+    local AutoHatch = Tab:NewSection("Auto Hatch")
+    
+    AutoHatch:NewDropdown("Select Egg", "Select the egg to hatch", {unpack(Eggs)}, function(mob)
+        _G.settings.selectEgg = mob
+    end)
+    
+    local AH1 = AutoHatch:NewToggle("Hatch x1", "Auto Hatches 1", function(bool)
+        _G.settings.autoEgg1 = bool
+        saveSettings()
+        if _G.settings.autoEgg1 then
+            game.Players.LocalPlayer.Character:MoveTo(game.Workspace.Eggs:FindFirstChild(_G.settings.selectEgg.. ' Egg').E.Position + Vector3.new(5, 0, 0) - Vector3.new(0, 2.4, 0))
+        end
+        spawn(function()
+            while _G.settings.autoEgg1 do
+                wait()
+                local args = {[1] = _G.settings.selectEgg..' Egg',[2] = 1}
+                game:GetService("ReplicatedStorage").Remotes.BuyEgg:InvokeServer(unpack(args))
+            end
+        end)
+    end)
+    
+    local AH3 = AutoHatch:NewToggle("Hatch x3", "Auto Hatches 3", function(bool)
+        _G.settings.autoEgg3 = bool
+        saveSettings()
+        if _G.settings.autoEgg3 then
+            game.Players.LocalPlayer.Character:MoveTo(game.Workspace.Eggs:FindFirstChild(_G.settings.selectEgg.. ' Egg').E.Position + Vector3.new(5, 0, 0) - Vector3.new(0, 2.4, 0))
+        end
+        spawn(function()
+            while _G.settings.autoEgg3 do
+                wait()
+                local args = {[1] = _G.settings.selectEgg..' Egg',[2] = 3}
+                game:GetService("ReplicatedStorage").Remotes.BuyEgg:InvokeServer(unpack(args))
+            end
+        end)
+    end)
+    
+    local AutoVial = Tab:NewSection("Auto Vial")
+    
+    local AV = AutoVial:NewToggle("", "Uses a vial whenever one is almost done", function(state)
+        _G.settings.autoVial = state
+        saveSettings()
+        spawn(function()
+            while _G.settings.autoVial do
+                wait(1)
+                for i, v in pairs(game.ReplicatedStorage.Stats[game.Players.LocalPlayer.Name].TimeBoosts:GetChildren()) do
+                    if v.Value <= 60 then
+                        if v.Name == "Tap" then
+                            local args = {[1] = "Vial".. "Taps"}
+                            game:GetService("ReplicatedStorage").Remotes.UseVial:FireServer(unpack(args))
+                        else
+                            local args = {[1] = "Vial".. v.Name}
+                            game:GetService("ReplicatedStorage").Remotes.UseVial:FireServer(unpack(args))
+                        end
+                    end
+                end
+            end
+        end)
+    end)
+    
+    local AutoEquip = Tab:NewSection("Auto Equip")
+    
+    local AE = AutoEquip:NewToggle("", "Auto Equips Your Best Pets", function(bool)
+        _G.settings.autoEquip = bool
+        saveSettings()
+        spawn(function()
+            while _G.settings.autoEquip do
+                wait(5)
+                if not _G.settings.autoEquip then return end
+                game:GetService("ReplicatedStorage").Remotes.UnequipAll:InvokeServer()
+                game:GetService("ReplicatedStorage").Remotes.EquipBest:InvokeServer()
+            end
+        end)
+    end)
+    
+    local Speed = Tab2:NewSection("Speed Slider")
+    
+    getgenv().Sp = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+    Speed:NewSlider("", "Changes Your Speed", 250, 16, function(s) -- 500 (MaxValue) | 0 (MinValue)
+        Sp = s
+    end)
+    spawn(function()
+        while wait() do
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Sp
+        end
+    end)
+    
+    local Codes = Tab2:NewSection("Redeem Codes")
+    
+    Codes:NewButton("", "Redeem Codes", function()
+        for i, v in pairs(Codes) do
+            local args = {[1] = v}
+            game:GetService("ReplicatedStorage").Remotes.RedeemCode:InvokeServer(unpack(args))
+        end
+    end)
+    
+    local PA1 = Tab4:NewSection("Auto Collect Playtime")
+    
+    local PA1T = PA1:NewToggle("", "Auto Collects Playtime Rewards", function(state)
+        _G.settings.autoTime = state
+        saveSettings()
+        while _G.settings.autoTime do
+            wait(0.1)
+            if _G.settings.autoTime then
+                for i, v in pairs(PTR) do
+                    local args = {[1] = v}
+                    game:GetService("ReplicatedStorage").Remotes.ClaimPlayTime:FireServer(unpack(args))
+                end
+            end
+        end
+    end)
+    
+    local PA2 = Tab4:NewSection("Auto Collect Achievements")
+    
+    local PA2T = PA2:NewToggle("", "Auto Collects Achievements", function(state)
+        _G.settings.autoAchiev = state
+        saveSettings()
+        while _G.settings.autoAchiev do
+            wait()
+            if _G.settings.autoAchiev then
+                num = math.random(1, 8)
+                num2 = math.random(1, 12)
+                local args = {[1] = num,[2] = num2}
+                game:GetService("ReplicatedStorage").Remotes.ClaimAchievement:FireServer(unpack(args))
+            end
+        end
+    end)
+    
+    local afk = Tab4:NewSection("Anti-afk")
+    
+    local afkT = afk:NewToggle("", "Toggles anti afk", function(state)
+        local vu = game:GetService("VirtualUser")
+        _G.settings.antiafk = state
+        saveSettings()
+        while _G.settings.antiafk do
+            wait(60)
+            if not _G.settings.antiafk then return end
+            game:GetService("Players").LocalPlayer.Idled:connect(function()
+               vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+               wait(0.5)
+               vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+            end)
+        end
+    end)
+    
+-------------------------------------------------|
+else
+-------------------------------------------------|
+
+    local Window = Library.CreateLib("TLX Script", "Serpent")
+    local Tab = Window:NewTab("Auto")
+    local Tab2 = Window:NewTab("Misc")
+    local Tab3 = Window:NewTab("Keybinds")
+    local Keybinds = Tab3:NewSection("Keybinds")
+    
+    Keybinds:NewKeybind("ToggleUI", "Hides & UnHides UI", Enum.KeyCode.F, function()
+        Library:ToggleUI()
+    end)
+    Keybinds:NewKeybind("Index", "Opens the pet index", Enum.KeyCode.R, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = true
+        game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = false
+    end)
+    Keybinds:NewKeybind("Upgrades", "Opens the upgrade menu", Enum.KeyCode.T, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = true
+        game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = false
+    end)
+    Keybinds:NewKeybind("Skins", "Opens the skin shop", Enum.KeyCode.Y, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = true
+    end)
+    Keybinds:NewKeybind("Gold Machine", "Opens the gold machine", Enum.KeyCode.U, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = false
+        wait(0.1)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
+        local goldclone = workspace.UIProx.GoldenMachine:Clone()
+        goldclone.Parent = workspace.UIProx
+        goldclone.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Vector3.new(0, 2, 0)
+        spawn(function()
+            while wait() do
+                if game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled == false and game.Players.LocalPlayer.PlayerGui.Menus.MachineResult.Enabled == false then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25
+                    goldclone:Destroy()
+                    return
+                end
+            end
+        end)
+        spawn(function()
+            while wait() do
+                if game.Players.LocalPlayer.PlayerGui.Menus.MachineResult.Enabled == true or game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled == true then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
+                end
+            end
+        end)
+        if rainbowclone then
+            rainbowclone:Destroy()
+        end
+    end)
+    Keybinds:NewKeybind("Rainbow Machine", "Opens the rainbow machine", Enum.KeyCode.G, function()
+        game.Players.LocalPlayer.PlayerGui.Menus.Index.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.Upgrades.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.GoldenMachine.Enabled = false
+        game.Players.LocalPlayer.PlayerGui.Menus.TapSkins.Enabled = false
+        wait(0.1)
+        local rainbowclone = workspace.UIProx.RainbowMachine:Clone()
+        rainbowclone.Parent = workspace.UIProx
+        rainbowclone.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Vector3.new(0, 2, 0)
+        spawn(function()
+            while wait() do
+                if game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled == false and game.Players.LocalPlayer.PlayerGui.Menus.MachineResult.Enabled == false then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25
+                    rainbowclone:Destroy()
+                    return
+                end
+            end
+        end)
+        spawn(function()
+            while wait() do
+                if game.Players.LocalPlayer.PlayerGui.Menus.MachineResult.Enabled == true or game.Players.LocalPlayer.PlayerGui.Menus.RainbowMachine.Enabled == true then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
+                end
+            end
+        end)
+        if goldclone then
+            goldclone:Destroy()
+        end
+    end)
+    
+    local AutoTap = Tab:NewSection("Auto Tap")
+    
+    game.Players.LocalPlayer.Character.LeftFoot.Touched:Connect(function(hit)
+        if hit.Parent.Parent.Parent == workspace.Drops then
+            _G.settings.drop = hit.Parent.Name
+        end
+    end)
+    
+    local AT = AutoTap:NewToggle("", "Auto Taps", function(state)
+        _G.settings.autoTap = state
+        saveSettings()
+        spawn(function()
+            while _G.settings.autoTap do
+                wait()
+                local args = {[1] = _G.settings.drop}
+                game:GetService("ReplicatedStorage").Remotes.Tap:FireServer(unpack(args))
+            end
+        end)
+    end)
+    
+    local AutoRebirth = Tab:NewSection("Auto Rebirth")
+    
+    AutoRebirth:NewDropdown("Rebirth", "", {unpack(rebirths)}, function(mob)
+        if mob == '1' then
+            _G.settings.rebirthAmount = 1 
+        elseif mob == '5' then
+            _G.settings.rebirthAmount = 2 
+        elseif mob == '20' then
+            _G.settings.rebirthAmount = 3
+        elseif mob == '80' then
+            _G.settings.rebirthAmount = 4 
+        elseif mob == '400' then
+            _G.settings.rebirthAmount = 5 
+        elseif mob == '2K' then
+            _G.settings.rebirthAmount = 6
+        elseif mob == '10K' then
+            _G.settings.rebirthAmount = 7
+        elseif mob == '40K' then
+            _G.settings.rebirthAmount = 8
+        elseif mob == '100K' then
+            _G.settings.rebirthAmount = 9
+        elseif mob == '400K' then
+            _G.settings.rebirthAmount = 10
+        elseif mob == '2M' then
+            _G.settings.rebirthAmount = 11
+        elseif mob == '10M' then
+            _G.settings.rebirthAmount = 12
+        elseif mob == '40M' then
+            _G.settings.rebirthAmount = 13
+        elseif mob == '100M' then
+            _G.settings.rebirthAmount = 14
+        elseif mob == '500M' then
+            _G.settings.rebirthAmount = 15
+        elseif mob == '2B' then
+            _G.settings.rebirthAmount = 16
+        elseif mob == '10B' then
+            _G.settings.rebirthAmount = 17
+        elseif mob == '40B' then
+            _G.settings.rebirthAmount = 18
+        elseif mob == '200B' then
+            _G.settings.rebirthAmount = 19
+        elseif mob == '1T' then
+            _G.settings.rebirthAmount = 20
+        elseif mob == '2T' then
+            _G.settings.rebirthAmount = 21
+        elseif mob == '10T' then
+            _G.settings.rebirthAmount = 22
+        elseif mob == '40T' then
+            _G.settings.rebirthAmount = 23
+        elseif mob == '100T' then
+            _G.settings.rebirthAmount = 24
+        elseif mob == '500T' then
+            _G.settings.rebirthAmount = 25
+        elseif mob == '2Qd' then
+            _G.settings.rebirthAmount = 26
+        elseif mob == '10Qd' then
+            _G.settings.rebirthAmount = 27
+        elseif mob == '100Qd' then
+            _G.settings.rebirthAmount = 28
+        elseif mob == '500Qd' then
+            _G.settings.rebirthAmount = 29
+        elseif mob == '2Qn' then
+            _G.settings.rebirthAmount = 30
+        elseif mob == '10Qn' then
+            _G.settings.rebirthAmount = 31
+        elseif mob == '40Qn' then
+            _G.settings.rebirthAmount = 32
+        elseif mob == '200Qn' then
+            _G.settings.rebirthAmount = 33
+        elseif mob == '1Sx' then
+            _G.settings.rebirthAmount = 34
+        elseif mob == '5Sx' then
+            _G.settings.rebirthAmount = 35
+        end
+    end)
+    
+    local AR = AutoRebirth:NewToggle("", "Auto Rebirths", function(state)
+        _G.settings.autoRebirth = state
+        saveSettings()
+        spawn(function()
+            while _G.settings.autoRebirth do
+                wait()
+                local args = {[1] = _G.settings.rebirthAmount}
+                game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer(unpack(args))
+            end
+        end)
+    end)
+    
+    local AutoHatch = Tab:NewSection("Auto Hatch")
+    
+    AutoHatch:NewDropdown("Select Egg", "Select the egg to hatch", {unpack(Eggs)}, function(mob)
+        _G.settings.selectEgg = mob
+    end)
+    
+    local AH1 = AutoHatch:NewToggle("Hatch x1", "Auto Hatches 1", function(bool)
+        _G.settings.autoEgg1 = bool
+        saveSettings()
+        if _G.settings.autoEgg1 then
+            game.Players.LocalPlayer.Character:MoveTo(game.Workspace.Eggs:FindFirstChild(_G.settings.selectEgg.. ' Egg').E.Position + Vector3.new(5, 0, 0) - Vector3.new(0, 2.4, 0))
+        end
+        spawn(function()
+            while _G.settings.autoEgg1 do
+                wait()
+                local args = {[1] = _G.settings.selectEgg..' Egg',[2] = 1}
+                game:GetService("ReplicatedStorage").Remotes.BuyEgg:InvokeServer(unpack(args))
+            end
+        end)
+    end)
+    
+    local AH3 = AutoHatch:NewToggle("Hatch x3", "Auto Hatches 3", function(bool)
+        _G.settings.autoEgg3 = bool
+        saveSettings()
+        if _G.settings.autoEgg3 then
+            game.Players.LocalPlayer.Character:MoveTo(game.Workspace.Eggs:FindFirstChild(_G.settings.selectEgg.. ' Egg').E.Position + Vector3.new(5, 0, 0) - Vector3.new(0, 2.4, 0))
+        end
+        spawn(function()
+            while _G.settings.autoEgg3 do
+                wait()
+                local args = {[1] = _G.settings.selectEgg..' Egg',[2] = 3}
+                game:GetService("ReplicatedStorage").Remotes.BuyEgg:InvokeServer(unpack(args))
+            end
+        end)
+    end)
+    
+    local AutoVial = Tab:NewSection("Auto Vial")
+    
+    local AV = AutoVial:NewToggle("", "Uses a vial whenever one is almost done", function(state)
+        _G.settings.autoVial = state
+        saveSettings()
+        spawn(function()
+            while _G.settings.autoVial do
+                wait(1)
+                for i, v in pairs(game.ReplicatedStorage.Stats[game.Players.LocalPlayer.Name].TimeBoosts:GetChildren()) do
+                    if v.Value <= 60 then
+                        if v.Name == "Tap" then
+                            local args = {[1] = "Vial".. "Taps"}
+                            game:GetService("ReplicatedStorage").Remotes.UseVial:FireServer(unpack(args))
+                        else
+                            local args = {[1] = "Vial".. v.Name}
+                            game:GetService("ReplicatedStorage").Remotes.UseVial:FireServer(unpack(args))
+                        end
+                    end
+                end
+            end
+        end)
+    end)
+    
+    local AutoEquip = Tab:NewSection("Auto Equip")
+    
+    local AE = AutoEquip:NewToggle("", "Auto Equips Your Best Pets", function(bool)
+        _G.settings.autoEquip = bool
+        saveSettings()
+        spawn(function()
+            while _G.settings.autoEquip do
+                wait(5)
+                if not _G.settings.autoEquip then return end
+                game:GetService("ReplicatedStorage").Remotes.UnequipAll:InvokeServer()
+                game:GetService("ReplicatedStorage").Remotes.EquipBest:InvokeServer()
+            end
+        end)
+    end)
+    
+    local Speed = Tab2:NewSection("Speed Slider")
+    
+    getgenv().Sp = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+    Speed:NewSlider("", "Changes Your Speed", 250, 16, function(s)
+        Sp = s
+    end)
+    spawn(function()
+        while wait() do
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Sp
+        end
+    end)
+    
+    local Codes = Tab2:NewSection("Redeem Codes")
+    
+    Codes:NewButton("", "Redeem Codes", function()
+        for i, v in pairs(Codes) do
+            local args = {[1] = v}
+            game:GetService("ReplicatedStorage").Remotes.RedeemCode:InvokeServer(unpack(args))
+        end
+    end)
+end
